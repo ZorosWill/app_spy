@@ -1,5 +1,6 @@
 package com.appspy;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -13,5 +14,9 @@ public class AppsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_apps);
 
         getSupportFragmentManager().beginTransaction().add(R.id.content, new AppInfoFragment()).commit();
+        ActionBar actionBar = this.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 }
