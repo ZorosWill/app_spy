@@ -1,10 +1,13 @@
 package com.appspy.Utils;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 
 import com.appspy.Apps.AppItem;
+import com.appspy.model.AppRuntime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,5 +35,36 @@ public class AppInfoUtils {
             }
         }
         return itemList;
+    }
+
+    public static AppRuntime getRuntime(Activity ctx, String packageName) {
+        ActivityManager am = (ActivityManager) ctx.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> procInfoList = am.getRunningAppProcesses();
+        AppRuntime apt = new AppRuntime();
+        for (ActivityManager.RunningAppProcessInfo procInfo : procInfoList) {
+            if (procInfo.processName.equals(packageName)) {
+                apt.isRunning = true;
+                apt.packageName = packageName;
+                apt.pid = procInfo.pid;
+                apt.uid = procInfo.uid;
+                break;
+            }
+        }
+        return apt;
+    }
+
+    public static String getProcesses(Activity ctx) {
+        ActivityManager am = (ActivityManager) ctx.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> procInfoList = am.getRunningAppProcesses();
+        StringBuilder builder = new StringBuilder();
+        for (ActivityManager.RunningAppProcessInfo procInfo : procInfoList) {
+            builder.append(procInfo.processName);
+            builder.append(",pid: ");
+            builder.append(Integer.toString(procInfo.pid));
+            builder.append(",uid: ");
+            builder.append(Integer.toString(procInfo.uid));
+            builder.append("\n");
+        }
+        return builder.toString();
     }
 }

@@ -24,6 +24,10 @@
         <activity
             android:name=".AppsActivity"
             android:label="@string/apps_activity" />
+        <activity
+            android:name=".AppDetailActivity"
+            android:label="@string/app_detail_activity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

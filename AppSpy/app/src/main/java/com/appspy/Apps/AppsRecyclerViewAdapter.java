@@ -1,5 +1,8 @@
 package com.appspy.Apps;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.appspy.Apps.AppInfoFragment.OnListFragmentInteractionListener;
+import com.appspy.AppDetailActivity;
+import com.appspy.Apps.AppsFragment.OnListFragmentInteractionListener;
 import com.appspy.R;
 
 import java.util.List;
@@ -17,11 +21,11 @@ import java.util.List;
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class AppInfoRecyclerViewAdapter extends RecyclerView.Adapter<AppInfoRecyclerViewAdapter.ViewHolder> {
+public class AppsRecyclerViewAdapter extends RecyclerView.Adapter<AppsRecyclerViewAdapter.ViewHolder> {
 
     private final List<AppItem> mValues;
 
-    public AppInfoRecyclerViewAdapter(List<AppItem> items) {
+    public AppsRecyclerViewAdapter(List<AppItem> items) {
         mValues = items;
     }
 
@@ -43,6 +47,12 @@ public class AppInfoRecyclerViewAdapter extends RecyclerView.Adapter<AppInfoRecy
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Context ctx = v.getContext();
+                Intent intent = new Intent(ctx, AppDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("packageName", holder.mItem.packageName);
+                intent.putExtras(bundle);
+                ctx.startActivity(intent);
             }
         });
     }
