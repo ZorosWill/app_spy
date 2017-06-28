@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.appspy.R;
+import com.appspy.Utils.AppInfoUtils;
 import com.appspy.Utils.PhoneInfoUtils;
 
 public class PhoneInfoFragment extends Fragment {
@@ -42,6 +43,7 @@ public class PhoneInfoFragment extends Fragment {
                 public void run() {
                     loadPhoneInfo();
                     loadExtraInfo();
+                    loadProcessesInfo();
                 }
             }).start();
             mIsLoaded = true;
@@ -82,6 +84,17 @@ public class PhoneInfoFragment extends Fragment {
             public void run() {
                 TextView build = (TextView) mRootView.findViewById(R.id.extra_info);
                 build.setText(extra);
+            }
+        });
+    }
+
+    public void loadProcessesInfo() {
+        final String processesInfo = AppInfoUtils.getProcesses(getActivity());
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                TextView build = (TextView) mRootView.findViewById(R.id.processes_info);
+                build.setText(processesInfo);
             }
         });
     }

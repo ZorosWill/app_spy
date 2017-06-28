@@ -22,7 +22,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class AppInfoFragment extends Fragment {
+public class AppsFragment extends Fragment {
 
     private Handler mHandler = new Handler();
     private int mColumnCount = 1;
@@ -33,7 +33,7 @@ public class AppInfoFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public AppInfoFragment() {
+    public AppsFragment() {
     }
 
     @Override
@@ -80,7 +80,7 @@ public class AppInfoFragment extends Fragment {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                mRecyclerView.setAdapter(new AppInfoRecyclerViewAdapter(items));
+                mRecyclerView.setAdapter(new AppsRecyclerViewAdapter(items));
             }
         });
     }

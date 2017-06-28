@@ -24,13 +24,24 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/TitleText"
-            android:text="@string/phone_info_extra" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TitleText"
+        android:text="@string/phone_info_extra" />
 
         <TextView
             android:id="@+id/extra_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TitleText"
+            android:text="@string/phone_info_processes" />
+
+        <TextView
+            android:id="@+id/processes_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </android.support.v7.widget.LinearLayoutCompat>
