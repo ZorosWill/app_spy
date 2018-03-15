@@ -2,6 +2,10 @@
     <string name="app_name">AppSpy</string>
     <string name="apps_activity">Installed Apps</string>
     <string name="app_detail_activity">App Detail</string>
+    <string name="app_activity">App Detail</string>
+
+    <string name="accessibility_service_name">Get TopActivity</string>
+    <string name="accessibility_service_description">This service is used to get runtime top activity. it is safe and occupied less memory.</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -14,6 +18,11 @@
     <string name="phone_info_build">Build</string>
     <string name="phone_info_extra">Extra</string>
     <string name="phone_info_processes">Processes</string>
+    <string name="phone_info_apps">Apps</string>
+
+    <string name="application_info">Application</string>
+    <string name="service_info">Service</string>
+    <string name="process_info">Process</string>
 
     <string name="title_activity_app_detail">AppDetailActivity</string>
     <string name="large_text">
