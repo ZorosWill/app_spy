@@ -5,9 +5,11 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 
 import com.appspy.Apps.AppItem;
 import com.appspy.model.AppRuntime;
+import com.appspy.phone.PhoneInfoItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,20 +53,5 @@ public class AppInfoUtils {
             }
         }
         return apt;
-    }
-
-    public static String getProcesses(Activity ctx) {
-        ActivityManager am = (ActivityManager) ctx.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningAppProcessInfo> procInfoList = am.getRunningAppProcesses();
-        StringBuilder builder = new StringBuilder();
-        for (ActivityManager.RunningAppProcessInfo procInfo : procInfoList) {
-            builder.append(procInfo.processName);
-            builder.append(",pid: ");
-            builder.append(Integer.toString(procInfo.pid));
-            builder.append(",uid: ");
-            builder.append(Integer.toString(procInfo.uid));
-            builder.append("\n");
-        }
-        return builder.toString();
     }
 }

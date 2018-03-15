@@ -1,22 +1,24 @@
 package com.appspy.phone;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.appspy.Apps.AppItem;
 import com.appspy.R;
-import com.appspy.Utils.AppInfoUtils;
 import com.appspy.Utils.PhoneInfoUtils;
 
+
 public class PhoneInfoFragment extends Fragment {
-    private Handler mHandler = new Handler();
-    private View mRootView = null;
-    private boolean mIsLoaded = false;
+    private RecyclerView mRecyclerView = null;
+    private String mInfoName = null;
 
     public PhoneInfoFragment() {
     }
@@ -27,80 +29,65 @@ public class PhoneInfoFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        mInfoName = this.getArguments().getString("infoName");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final PhoneInfoRecyclerViewAdapter adapter;
+                Activity activity = PhoneInfoFragment.this.getActivity();
+                if ("Build".equals(mInfoName)) {
+                    adapter = new PhoneInfoRecyclerViewAdapter(PhoneInfoUtils.getBuild(), PhoneInfoType.BUILD);
+                } else if ("Extra".equals(mInfoName)) {
+                    adapter = new PhoneInfoRecyclerViewAdapter(PhoneInfoUtils.getExtra(activity), PhoneInfoType.EXTRA);
+                } else if ("Processes".equals(mInfoName)) {
+                    adapter = new PhoneInfoRecyclerViewAdapter(PhoneInfoUtils.getProcesses(activity), PhoneInfoType.PROCESSES);
+                } else if ("Applications".equals(mInfoName)) {
+                    adapter = new PhoneInfoRecyclerViewAdapter(PhoneInfoUtils.getApps(activity), PhoneInfoType.APPLICATIONS);
+                } else if ("Services".equals(mInfoName)) {
+                    adapter = new PhoneInfoRecyclerViewAdapter(PhoneInfoUtils.getServices(activity), PhoneInfoType.SERVICES);
+                } else {
+                    adapter = null;
+                }
+                mRecyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (adapter != null) {
+                            mRecyclerView.setAdapter(adapter);
+                        }
+                    }
+                });
+            }
+        }).start();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.fragment_phone_info, container, false);
-        return mRootView;
+        mRecyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_phone_info, container, false);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
+        return mRecyclerView;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
-        if (!mIsLoaded) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    loadPhoneInfo();
-                    loadExtraInfo();
-                    loadProcessesInfo();
-                }
-            }).start();
-            mIsLoaded = true;
-        }
-    }
-
-    public void loadPhoneInfo() {
-        final String buildInfo = PhoneInfoUtils.getBuild();
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                TextView build = (TextView) mRootView.findViewById(R.id.builder_info);
-                build.setText(buildInfo);
-            }
-        });
-    }
-
-    public void loadExtraInfo() {
-        final StringBuilder extra = new StringBuilder();
-
-        extra.append("Root：");
-        extra.append(PhoneInfoUtils.isRooted() ? "Yes" : "No");
-        extra.append("\n");
-
-        int screenSize[] = PhoneInfoUtils.getScreenInfo(this.getActivity());
-        extra.append("Width：");
-        extra.append(Integer.toString(screenSize[0]));
-        extra.append("\n");
-        extra.append("Height：");
-        extra.append(Integer.toString(screenSize[1]));
-        extra.append("\n");
-        extra.append("Dpi：");
-        extra.append(Integer.toString(screenSize[2]));
-        extra.append("\n");
-
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                TextView build = (TextView) mRootView.findViewById(R.id.extra_info);
-                build.setText(extra);
-            }
-        });
-    }
-
-    public void loadProcessesInfo() {
-        final String processesInfo = AppInfoUtils.getProcesses(getActivity());
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                TextView build = (TextView) mRootView.findViewById(R.id.processes_info);
-                build.setText(processesInfo);
-            }
-        });
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+
+    }
+
+    public interface OnListFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onListFragmentInteraction(AppItem item);
     }
 }

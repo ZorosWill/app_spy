@@ -8,5 +8,6 @@ public class AppsActivity extends BaseActivity {
         setContentView(R.layout.activity_apps);
         getSupportFragmentManager().beginTransaction().add(R.id.content, new AppsFragment()).commit();
         super.initViews();
+        this.getSupportActionBar().setSubtitle("test text");
     }
 }
